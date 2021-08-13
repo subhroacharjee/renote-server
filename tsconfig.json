@@ -5,7 +5,7 @@
       "esModuleInterop": true,
       "outDir": "./build",
       "rootDir": "./src",
-      "target": "es6",
+      "target": "ES6",
       "skipLibCheck": true,
       "strict": true
   }
