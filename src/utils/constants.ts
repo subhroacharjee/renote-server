@@ -1,0 +1,2 @@
+export const EMAIL_PROVIDER = "EMAIL_PROVIDER";
+export const GOOGLE_PROVIDER = "GOOGLE_PROVIDER";
