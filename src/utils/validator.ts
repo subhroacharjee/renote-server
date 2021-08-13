@@ -13,3 +13,8 @@ export async function checkUserWithEmail (email:string) {
     var user =await models.UserModel.findOne({email:email}).exec();
     return !user?false:true;
 }
+
+export async function checkUserWithUID (uid:string) {
+    var user = await models.UserModel.findOne({uid:uid}).exec();
+    return !user?false:true;
+}

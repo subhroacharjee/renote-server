@@ -7,3 +7,7 @@ export const EMAIL_DOEST_EXISTS = "Invalid email/password";
 export const PASSWORD_DOEST_MATCH = "Invalid email/password";
 export const SOMETHING_WENT_WRONG = 'Something went wrong';
 export const WRONG_PASSORD = 'Wrong password';
+export const IDTOKEN_REQUIRED = 'Idtoken is required';
+export const INVALID_TOKEN = 'Invalid Token';
+export const PROVIDER_USER_EXISTS = 'User with this provider exists';
+export const PROVIDER_USER_DOESNT_EXISTS = 'User with this provider doesn\'t exists';
