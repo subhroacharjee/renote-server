@@ -18,13 +18,13 @@ export function createJWT(payload:any,exp:string|null=null) {
 /**
  * 
  * @param token is the token from header
- * @returns an object containing either token attribute or error attribute
+ * @returns an object containing either payload attribute or error attribute
  */
 export function decodeJWT(token:string) {
     const resp:any = {};
 
     try {
-        resp.token = jsonwebtoken.verify(token,SECRET_KEY );
+        resp.payload = jsonwebtoken.verify(token,SECRET_KEY );
     } catch (error) {
         console.error(error);
         resp.error = 'Invalid Token'

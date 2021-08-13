@@ -11,7 +11,7 @@ const userSchema = new Schema<UserDataInterface>({
     password: {
         type:SchemaTypes.String,
         required:false,
-        default:""
+        default:null
     },
     provider: {
         type:SchemaTypes.String,

@@ -1,2 +1,9 @@
 export const EMAIL_PROVIDER = "EMAIL_PROVIDER";
 export const GOOGLE_PROVIDER = "GOOGLE_PROVIDER";
+export const EMAIL_INVALID = "Invalid email ";
+export const PASSWORD_INVALID = "Password must have minimum of 8 characters";
+export const EMAIL_EXISTS = "The user with this email already exists";
+export const EMAIL_DOEST_EXISTS = "Invalid email/password";
+export const PASSWORD_DOEST_MATCH = "Invalid email/password";
+export const SOMETHING_WENT_WRONG = 'Something went wrong';
+export const WRONG_PASSORD = 'Wrong password';
