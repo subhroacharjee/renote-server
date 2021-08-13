@@ -6,7 +6,6 @@ import * as validator from '../utils/validator';
 import * as constants from '../utils/constants';
 import * as functions from '../utils/function';
 import models from "../models";
-import { flattenDiagnosticMessageText } from "typescript";
 
 export async function Register( req:Request, res:Response) {
     try {
@@ -193,10 +192,10 @@ export async function changePassword (req:Request, res:Response) {
     }
 }
 
-export async function registerFirebaseUser (req: Request, res: Response) {
+export async function registerWithFirebaseUser (req: Request, res: Response) {
     try {
         const response : interfaces.RespINF = {
-            success: flattenDiagnosticMessageText
+            success: false
         }
         const idToken = req.body.idToken;
         if (!idToken) {
@@ -227,6 +226,52 @@ export async function registerFirebaseUser (req: Request, res: Response) {
         await newUser.save();
 
         const userDisplay: interfaces.UserDisplayInf = functions.createUserDisplayData(newUser);
+
+        const token = Hash.createJWT(userDisplay);
+
+        response.success = true;
+        response.body = {
+            user: userDisplay,
+            access_token: token
+        };
+
+        return res.json(response);
+
+    } catch (error) {
+        console.log(error);
+        const errRes : interfaces.RespINF = {
+            success: false,
+            'error': constants.SOMETHING_WENT_WRONG
+        };
+        return res.json(errRes);
+    }
+}
+
+export async function loginWithFirebase (req: Request, res: Response) {
+    try {
+        const response : interfaces.RespINF = {
+            success: false
+        }
+        const idToken = req.body.idToken;
+        if (!idToken) {
+            response.error = constants.IDTOKEN_REQUIRED;
+            return res.json(response);
+        }
+
+        const firebaseUser = await firebase.getFirebaseUserFromIdToken(idToken);
+        if (!firebaseUser) {
+            response.error = constants.INVALID_TOKEN;
+            return res.json(response);
+        }
+        var uid = firebaseUser.uid;
+        
+        if (!await validator.checkUserWithUID(uid)) {
+            response.error = constants.PROVIDER_USER_DOESNT_EXISTS
+            return res.json(response);
+        }
+
+        const user = await models.UserModel.findOne({uid:uid}).exec();
+        const userDisplay: interfaces.UserDisplayInf = functions.createUserDisplayData(user);
 
         const token = Hash.createJWT(userDisplay);
 
