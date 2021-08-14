@@ -199,12 +199,14 @@ export async function registerWithFirebaseUser (req: Request, res: Response) {
         }
         const idToken = req.body.idToken;
         if (!idToken) {
+            response.providerSts = 0;
             response.error = constants.IDTOKEN_REQUIRED;
             return res.json(response);
         }
 
         const firebaseUser = await firebase.getFirebaseUserFromIdToken(idToken);
         if (!firebaseUser) {
+            response.providerSts = 0;
             response.error = constants.INVALID_TOKEN;
             return res.json(response);
         }
@@ -215,32 +217,43 @@ export async function registerWithFirebaseUser (req: Request, res: Response) {
             return res.json(response);
         }
 
-        var userData: interfaces.UserDataInterface = {
-            email: firebaseUser.email || '',
-            uid: firebaseUser.uid,
-            created_at: new Date(),
-            provider: constants.GOOGLE_PROVIDER
+        try{ 
+                var userData: interfaces.UserDataInterface = {
+                    email: firebaseUser.email || '',
+                    uid: firebaseUser.uid,
+                    created_at: new Date(),
+                    provider: constants.GOOGLE_PROVIDER
+                }
+
+                const newUser = new models.UserModel(userData);
+                await newUser.save();
+
+                const userDisplay: interfaces.UserDisplayInf = functions.createUserDisplayData(newUser);
+
+                const token = Hash.createJWT(userDisplay);
+
+                response.success = true;
+                response.body = {
+                    user: userDisplay,
+                    access_token: token
+                };
+
+                return res.json(response);
+        }catch(err){
+            await firebase.deleteFirebaseUser(firebaseUser.uid);
+            const errRes : interfaces.RespINF = {
+                success: false,
+                providerSts: 0,
+                'error': constants.SOMETHING_WENT_WRONG
+            };
+            return res.json(errRes);
         }
-
-        const newUser = new models.UserModel(userData);
-        await newUser.save();
-
-        const userDisplay: interfaces.UserDisplayInf = functions.createUserDisplayData(newUser);
-
-        const token = Hash.createJWT(userDisplay);
-
-        response.success = true;
-        response.body = {
-            user: userDisplay,
-            access_token: token
-        };
-
-        return res.json(response);
 
     } catch (error) {
         console.log(error);
         const errRes : interfaces.RespINF = {
             success: false,
+            providerSts: 0,
             'error': constants.SOMETHING_WENT_WRONG
         };
         return res.json(errRes);
@@ -266,6 +279,8 @@ export async function loginWithFirebase (req: Request, res: Response) {
         var uid = firebaseUser.uid;
         
         if (!await validator.checkUserWithUID(uid)) {
+            await firebase.deleteFirebaseUser(firebaseUser.uid);
+            response.providerSts = 0;
             response.error = constants.PROVIDER_USER_DOESNT_EXISTS
             return res.json(response);
         }

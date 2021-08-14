@@ -13,3 +13,11 @@ export async function getFirebaseUserFromIdToken (idToken:string){
         return null;
     }
 }
+
+export async function deleteFirebaseUser (uid: string) {
+    try {
+        await admin.auth().deleteUser(uid);
+    } catch (err) {
+        console.log(err);
+    }
+}
