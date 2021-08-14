@@ -16,3 +16,17 @@ export interface UserDisplayInf {
 export interface RespINF {
     [key:string]:any
 }
+
+export interface NotesDataInterface {
+    user: string
+    title: string
+    body?: string
+    created_at: Date
+}
+
+export interface NotesDisplayInterface {
+    id: string
+    title: string
+    body?: string
+    created_at: Date
+}

@@ -18,3 +18,12 @@ export async function checkUserWithUID (uid:string) {
     var user = await models.UserModel.findOne({uid:uid}).exec();
     return !user?false:true;
 }
+
+export async function checkPostOfUser(postId:string, userId:string) {
+    var post = await models.NoteModel.findOne({
+        _id:postId,
+        user:userId
+    }).exec();
+
+    return post
+}

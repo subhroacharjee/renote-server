@@ -11,3 +11,4 @@ export const IDTOKEN_REQUIRED = 'Idtoken is required';
 export const INVALID_TOKEN = 'Invalid Token';
 export const PROVIDER_USER_EXISTS = 'User with this provider exists';
 export const PROVIDER_USER_DOESNT_EXISTS = 'User with this provider doesn\'t exists';
+export const TITLE_REQUIRED = 'Title is required';

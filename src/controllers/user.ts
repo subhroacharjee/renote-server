@@ -55,12 +55,7 @@ export async function Register( req:Request, res:Response) {
         return res.json(response);
 
     } catch (error) {
-        console.log(error);
-        const errRes: interfaces.RespINF = {
-            'success':false,
-            'error':constants.SOMETHING_WENT_WRONG
-        }
-        return res.json(errRes);
+        return res.json(functions.returnDefaultError(error));
     }
 }
 
@@ -113,12 +108,7 @@ export async function Login(req:Request, res:Response) {
         return res.json(response);
         
     } catch (error) {
-        console.log(error);
-        const errRes: interfaces.RespINF = {
-            'success':false,
-            'error':constants.SOMETHING_WENT_WRONG
-        }
-        return res.json(errRes);
+        return res.json(functions.returnDefaultError(error));
     }
 }
 
@@ -138,13 +128,7 @@ export async function getUser(req:Request, res:Response) {
 
         return res.json(response);
     } catch (error) {
-
-        console.log(error);
-        const errRes : interfaces.RespINF = {
-            success: false,
-            'error': constants.SOMETHING_WENT_WRONG
-        };
-        return res.json(errRes);
+       return res.json(functions.returnDefaultError(error))
     }
 }
 
@@ -183,12 +167,7 @@ export async function changePassword (req:Request, res:Response) {
 
         return res.json(response);
     } catch (error) {
-        console.log(error);
-        const errRes : interfaces.RespINF = {
-            success: false,
-            'error': constants.SOMETHING_WENT_WRONG
-        };
-        return res.json(errRes);
+       return res.json(functions.returnDefaultError(error))
     }
 }
 
@@ -299,11 +278,6 @@ export async function loginWithFirebase (req: Request, res: Response) {
         return res.json(response);
 
     } catch (error) {
-        console.log(error);
-        const errRes : interfaces.RespINF = {
-            success: false,
-            'error': constants.SOMETHING_WENT_WRONG
-        };
-        return res.json(errRes);
+       return res.json(functions.returnDefaultError(error))
     }
 }
